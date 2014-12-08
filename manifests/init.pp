@@ -11,13 +11,15 @@
 # part should be split into a separate module, but that's a future project.
 #
 # Note that the actual administrator user objects have to be managed outside 
-# this module.
+# this module. In particular, the module assumes they're created by a private 
+# class called "localusers", which sets up (admin) users and groups. Without 
+# that explicit localusers dependency Puppet runs would initially fail.
 #
 # == Parameters
 #
 # [*admingroup*]
-#   Group into which the Puppet administrators belong. Will be created if it 
-#   does not exist.
+#   Group into which the Puppet administrators belong. The group will not be 
+#   created if it does not exist.
 # [*confdir*]
 #   The Puppet configuration directory. Defaults to '/etc/puppet'.
 # [*envdir*]
@@ -40,13 +42,12 @@ class puppetadmins
 {
     include puppetadmins::prequisites
 
-    class { 'puppetadmins::group':
-        admingroup => $admingroup,
-    }
-
     class { 'puppetadmins::acls':
         admingroup => $admingroup,
         confdir => $confdir,
         envdir => $envdir,
+        # This is a reference to a local class that creates (mostly) 
+        # administrative users and various groups.
+        require => Class['localusers'],
     }
 }
