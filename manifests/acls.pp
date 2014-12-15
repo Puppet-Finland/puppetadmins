@@ -55,7 +55,7 @@ class puppetadmins::acls
     }
 
     exec { 'puppetadmins-set-acls':
-        command => "setfacl -R -P -n -M ${acl_file} ${envdir}",
+        command => "setfacl -R -P -n -M ${acl_file} ${envdir} ${confdir}/.git",
         path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin'],
         require => File['puppetadmins-acl-list'],
     }

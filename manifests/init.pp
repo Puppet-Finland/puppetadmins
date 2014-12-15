@@ -15,6 +15,13 @@
 # class called "localusers", which sets up (admin) users and groups. Without 
 # that explicit localusers dependency Puppet runs would initially fail.
 #
+# Also note that this module assumes that $confdir/.git exists and manages ACLs
+# for it. This is necessary because on newer versions of Git it is possible to
+# add submodules to any directory, not just the root of the Git repository. This
+# means that the actual Git indices are stored outside $envdir (e.g.
+# /etc/puppet/environments), and a normal user won't be able to write to them
+# without setting proper ACLs in the Git root directory.
+#
 # == Parameters
 #
 # [*admingroup*]
