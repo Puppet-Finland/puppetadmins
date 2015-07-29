@@ -26,7 +26,8 @@
 #
 # [*admingroup*]
 #   Group into which the Puppet administrators belong. The group will not be 
-#   created if it does not exist.
+#   created if it does not exist. The group must be defined elsewhere as a 
+#   Puppet resource
 # [*confdir*]
 #   The Puppet configuration directory. Defaults to '/etc/puppet'.
 # [*envdir*]
@@ -53,8 +54,7 @@ class puppetadmins
         admingroup => $admingroup,
         confdir => $confdir,
         envdir => $envdir,
-        # This is a reference to a local class that creates (mostly) 
-        # administrative users and various groups.
-        require => Class['localusers'],
+        # Ensure the $admingroup is defined before setting ACLs
+        require => Group[$admingroup],
     }
 }
