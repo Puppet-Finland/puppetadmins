@@ -50,7 +50,7 @@ class puppetadmins::acls
         content => template('puppetadmins/puppetadmins-acl-list.txt.erb'),
         owner => root,
         group => root,
-        mode => 644,
+        mode => '0644',
         require => Class['puppetadmins::prequisites'],
     }
 
